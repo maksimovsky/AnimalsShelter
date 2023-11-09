@@ -12,7 +12,10 @@ public class Shelter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private String info;
+    private String address;
+    private String openingHours;
+    private int phone;
+    private String safety;
     @OneToMany(mappedBy = "shelter")
     @JsonIgnore
     private Set<Animal> animals;
@@ -36,12 +39,36 @@ public class Shelter {
         this.name = name;
     }
 
-    public String getInfo() {
-        return info;
+    public String getAddress() {
+        return address;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getOpeningHours() {
+        return openingHours;
+    }
+
+    public void setOpeningHours(String openingHours) {
+        this.openingHours = openingHours;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public String getSafety() {
+        return safety;
+    }
+
+    public void setSafety(String safety) {
+        this.safety = safety;
     }
 
     public Set<Animal> getAnimals() {

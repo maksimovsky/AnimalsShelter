@@ -3,7 +3,7 @@ package pro.dev.animalsshelter.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,12 +13,15 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private String type;
+    public enum Type {CAT, DOG};
+    private Type type;
     private String breed;
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
     @Lob
     private byte[] photo;
-    private int remainder_of_probation_period;
+    private long photoSize;
+    private String mediaType;
+    private int remainderOfProbationPeriod;
     @ManyToOne
     @JoinColumn(name = "shelter_id")
     private Shelter shelter;
@@ -45,11 +48,11 @@ public class Animal {
         this.name = name;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -61,11 +64,11 @@ public class Animal {
         this.breed = breed;
     }
 
-    public LocalDateTime getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -77,12 +80,28 @@ public class Animal {
         this.photo = photo;
     }
 
-    public int getRemainder_of_probation_period() {
-        return remainder_of_probation_period;
+    public long getPhotoSize() {
+        return photoSize;
     }
 
-    public void setRemainder_of_probation_period(int remainder_of_probation_period) {
-        this.remainder_of_probation_period = remainder_of_probation_period;
+    public void setPhotoSize(long photoSize) {
+        this.photoSize = photoSize;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    public int getRemainderOfProbationPeriod() {
+        return remainderOfProbationPeriod;
+    }
+
+    public void setRemainderOfProbationPeriod(int remainderOfProbationPeriod) {
+        this.remainderOfProbationPeriod = remainderOfProbationPeriod;
     }
 
     public Shelter getShelter() {
@@ -118,7 +137,7 @@ public class Animal {
 
         if (id != animal.id) return false;
         if (!Objects.equals(name, animal.name)) return false;
-        if (!Objects.equals(type, animal.type)) return false;
+        if (type != animal.type) return false;
         if (!Objects.equals(breed, animal.breed)) return false;
         return Objects.equals(dateOfBirth, animal.dateOfBirth);
     }
