@@ -3,6 +3,7 @@ package pro.dev.animalsshelter.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -11,7 +12,7 @@ public class AnimalOwner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private int phone;
+    private String phone;
     private long telegramId;
     private long chatId;
     @OneToMany(mappedBy = "owner")
@@ -37,11 +38,11 @@ public class AnimalOwner {
         this.name = name;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -84,14 +85,14 @@ public class AnimalOwner {
 
         AnimalOwner that = (AnimalOwner) o;
 
-        if (phone != that.phone) return false;
         if (telegramId != that.telegramId) return false;
-        return chatId == that.chatId;
+        if (chatId != that.chatId) return false;
+        return Objects.equals(phone, that.phone);
     }
 
     @Override
     public int hashCode() {
-        int result = phone;
+        int result = phone != null ? phone.hashCode() : 0;
         result = 31 * result + (int) (telegramId ^ (telegramId >>> 32));
         result = 31 * result + (int) (chatId ^ (chatId >>> 32));
         return result;
