@@ -79,7 +79,42 @@ public class AnimalServiceImpl implements AnimalService {
         if (animal == null) {
             return null;
         }
-        return repository.save(animal);
+        if (name != null) {
+            animal.setName(name);
+        }
+        if (type != null) {
+            try {
+                animal.setType(Animal.Type.valueOf(type.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                logger.info("Неверный вид животного");
+                return null;
+            }
+        }
+        if (breed != null) {
+            animal.setBreed(breed);
+        }
+        if (dayOfBirth == null) {
+            dayOfBirth = animal.getDateOfBirth().getDayOfMonth();
+        }
+        if (monthOfBirth == null) {
+            monthOfBirth = animal.getDateOfBirth().getMonthValue();
+        }
+        if (yearOfBirth == null) {
+            yearOfBirth = animal.getDateOfBirth().getYear();
+        }
+        try {
+            animal.setDateOfBirth(LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth));
+        } catch (DateTimeException e) {
+            logger.info("Неверный формат даты");
+            return null;
+        }
+        if (photo != null) {
+            animal = savePhoto(animal, photo);
+            if (animal == null) {
+                return null;
+            }
+        }
+        return AnimalMapper.toDto(repository.save(animal));
     }
 
     @Override
